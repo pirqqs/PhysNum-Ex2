@@ -59,28 +59,51 @@ private:
   // TODO definir l'énergie mechanique
   double Emec(double theta, double thetadot, double t_)
   {
-
-      return 0.;
+    double emec = (1/2)*m*pow(L*thetadot,2) - m*g*L*cos(theta); // TODO: Evaluer l'energie mecanique
+      return emec;
   }
 
   // TODO definir la puissance des forces non conservatives
   double Pnonc(double theta, double thetadot, double t_)
   {
-
-      return 0.;
+    double pnonc = -kappa*L*pow(thetadot,2)*(L*thetadot+r*Omega*cos(Omega*t_-theta)) + m*L*Omega*Omega*pow(thetadot,2)*r*sin(Omega*t_-theta); // TODO: Evaluer la puissance des forces non conservatives
+      return pnonc;
   }
 
   // TODO écrire la fonction pour l'acceleration (theta_doubledot)
   double compute_acc(double theta, double thetadot, double t_)
   {
-      double acc = 0.;
+      double acc = -(g/L)*sin(theta) - (kappa/(m))*(thetadot +((r*Omega)/L)*cos(Omega*t_-theta))+((r*Omega*Omega)/L)*sin(Omega*t_-theta); // TODO: Evaluer l'acceleration
 
       return acc;
   }
   // TODO implementer le schéma Velocity Verlet pour une accélération dependante du theta, thetadot et t.
   void step()
   {
+    // Sauvegarde de l'ancienne position (theta) requise pour la fin du calcul
+    double theta_old = theta;
 
+    // --- 1er APPEL ---
+    double a_t = compute_acc(theta, thetadot, t);
+
+    // Mise à jour de la position (Eq. 2.128)
+    theta += thetadot * dt + 0.5 * a_t * dt * dt;
+
+    // Vitesse à la demi-étape (Eq. 2.129)
+    double thetadot_half = thetadot + 0.5 * a_t * dt;
+
+    // --- 2ème APPEL ---
+    // Accélération évaluée à (theta, thetadot+1/2, tj)
+    double a_t_halfv = compute_acc(theta_old, thetadot_half, t);
+
+    // --- 3ème APPEL ---
+    // Accélération évaluée à (theta+1, thetadot+1/2, tj+1)
+    double a_next_halfv = compute_acc(theta, thetadot_half, t + dt);
+
+    // Mise à jour finale de la vitesse (Eq. 2.132)
+    thetadot += 0.5 * (a_t_halfv + a_next_halfv) * dt;
+
+    // Mise à jour du temps
     t += dt;
   }
 
