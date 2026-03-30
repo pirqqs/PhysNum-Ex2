@@ -4,7 +4,7 @@ import os
 
 # Parameters
 repertoire = ''
-executable = 'engine.exe'
+executable = './engine'
 input_filename = 'configuration.in.example' # Strictly no longer needed, but we keep it for now to avoid having to change the code in engine.cpp
 
 

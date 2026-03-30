@@ -10,7 +10,7 @@ import math
 # USER SETTINGS
 # ============================================================
 
-folder = r"..."
+folder = "Scan_nsteps_pendulum_kappa_0_r_0_Omega_2"
 
 plot_layout = {
     "theta_time": True,

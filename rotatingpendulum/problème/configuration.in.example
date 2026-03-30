@@ -10,4 +10,4 @@ thetadot0   = 0.
 output      = output.out
 sampling    = 1 //frequency of data writing
 N           = 0 // number of excitation periods
-nsteps      = 10000 //number of time steps per period (if N>0), number of timesteps total if N=0
+nsteps      = 10 //number of time steps per period (if N>0), number of timesteps total if N=0
